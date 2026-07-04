@@ -1,0 +1,12 @@
+name: core_ui_example
+description: "Example app for core_ui package showcasing all Material 3 widgets."
+publish_to: 'none'
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  core_ui:
+    path: ../
