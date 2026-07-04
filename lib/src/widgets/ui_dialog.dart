@@ -8,7 +8,8 @@ import 'ui_text_button.dart';
 /// Reusable Material 3 Dialog styled with design system tokens.
 class UIDialog extends StatelessWidget {
   final String title;
-  final String message;
+  final String? message;
+  final Widget? content;
   final String confirmLabel;
   final VoidCallback onConfirm;
   final String? cancelLabel;
@@ -18,7 +19,8 @@ class UIDialog extends StatelessWidget {
   const UIDialog({
     super.key,
     required this.title,
-    required this.message,
+    this.message,
+    this.content,
     required this.confirmLabel,
     required this.onConfirm,
     this.cancelLabel,
@@ -30,7 +32,8 @@ class UIDialog extends StatelessWidget {
   static Future<T?> show<T>({
     required BuildContext context,
     required String title,
-    required String message,
+    String? message,
+    Widget? content,
     required String confirmLabel,
     required VoidCallback onConfirm,
     String? cancelLabel,
@@ -49,6 +52,7 @@ class UIDialog extends StatelessWidget {
           child: UIDialog(
             title: title,
             message: message,
+            content: content,
             confirmLabel: confirmLabel,
             onConfirm: onConfirm,
             cancelLabel: cancelLabel,
@@ -118,13 +122,13 @@ class UIDialog extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
-      content: Text(
-        message,
+      content: content ?? (message != null ? Text(
+        message!,
         style: UITypography.bodyMedium.copyWith(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         textAlign: TextAlign.center,
-      ),
+      ) : null),
       actionsAlignment: MainAxisAlignment.spaceEvenly,
       actionsPadding:
           const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
