@@ -11,6 +11,7 @@ class UIAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color backgroundColor;
   final Color? foregroundColor;
   final double elevation;
+  final PreferredSizeWidget? bottom;
 
   const UIAppBar({
     super.key,
@@ -21,6 +22,7 @@ class UIAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor = Colors.transparent,
     this.foregroundColor,
     this.elevation = 0,
+    this.bottom,
   });
 
   @override
@@ -44,6 +46,7 @@ class UIAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: resolvedColor,
       elevation: elevation,
       scrolledUnderElevation: 0,
+      bottom: bottom,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
@@ -53,5 +56,7 @@ class UIAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(
+        kToolbarHeight + (bottom?.preferredSize.height ?? 0.0),
+      );
 }
