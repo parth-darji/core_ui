@@ -17,6 +17,10 @@ class UISafeBottomSpacing extends StatelessWidget {
   /// Helper to calculate the active safe bottom padding dynamically.
   static double getPadding(BuildContext context,
       {double fallbackMargin = 16.0}) {
+    final view = View.of(context);
+    if (view.viewInsets.bottom > 0) {
+      return 0.0;
+    }
     final systemBottom = MediaQuery.of(context).padding.bottom;
     return systemBottom > 0 ? systemBottom : fallbackMargin;
   }

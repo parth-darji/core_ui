@@ -142,12 +142,16 @@ class UIBottomSheet extends StatelessWidget {
     final resolvedBg =
         isDark ? const Color(0xFF1A1A1A) : UIColors.cardBackground;
 
+    // Register dependency on MediaQuery to rebuild when keyboard state changes
     final mediaQuery = MediaQuery.of(context);
-    final screenHeight = mediaQuery.size.height;
-    final keyboardHeight = mediaQuery.viewInsets.bottom;
-    final statusBarHeight = mediaQuery.padding.top;
 
-    // Dynamically constrain sheet height to the visible viewport above the keyboard
+    final view = View.of(context);
+    final pixelRatio = view.devicePixelRatio;
+    final screenHeight = view.physicalSize.height / pixelRatio;
+    final keyboardHeight = view.viewInsets.bottom / pixelRatio;
+    final statusBarHeight = view.padding.top / pixelRatio;
+
+    // Dynamically constrain sheet height to the visible viewport above the keyboard using raw unconsumed view insets
     final maxSheetHeight = (screenHeight - keyboardHeight - statusBarHeight - 16.0) * maxHeightMultiplier;
 
     return Scaffold(
