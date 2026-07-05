@@ -3,7 +3,7 @@ import '../tokens/ui_typography.dart';
 import 'ui_bounceable.dart';
 
 /// Reusable capsule sliding Segment Control.
-class UISegmentControl extends StatelessWidget {
+class UISegmentControl extends StatelessWidget implements PreferredSizeWidget {
   final List<String> segments;
   final int selectedIndex;
   final ValueChanged<int> onValueChanged;
@@ -117,4 +117,7 @@ class UISegmentControl extends StatelessWidget {
       },
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56.0);
 }
