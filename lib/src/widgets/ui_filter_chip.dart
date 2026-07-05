@@ -22,6 +22,9 @@ class UIFilterChip extends StatelessWidget {
     final resolvedSelectedBg = Theme.of(context).colorScheme.primary;
     final resolvedUnselectedBg =
         isDark ? const Color(0xFF222222) : const Color(0xFFF0F3F3);
+    final activeTextColor = ThemeData.estimateBrightnessForColor(resolvedSelectedBg) == Brightness.dark
+        ? Colors.white
+        : const Color(0xFF1E1E1E);
 
     return FilterChip(
       label: Text(label),
@@ -30,12 +33,12 @@ class UIFilterChip extends StatelessWidget {
       avatar: avatar,
       labelStyle: UITypography.bodySmall.copyWith(
         color:
-            isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface,
+            isSelected ? activeTextColor : Theme.of(context).colorScheme.onSurface,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
       backgroundColor: resolvedUnselectedBg,
       selectedColor: resolvedSelectedBg,
-      checkmarkColor: Colors.white,
+      checkmarkColor: activeTextColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
         side: BorderSide(

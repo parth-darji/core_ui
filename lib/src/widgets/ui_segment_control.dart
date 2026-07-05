@@ -27,6 +27,9 @@ class UISegmentControl extends StatelessWidget {
     final resolvedBg = backgroundColor ??
         (isDark ? const Color(0xFF1E1E1E) : const Color(0xFFEAEAEA));
     final resolvedActive = activeColor ?? Theme.of(context).colorScheme.primary;
+    final activeTextColor = ThemeData.estimateBrightnessForColor(resolvedActive) == Brightness.dark
+        ? Colors.white
+        : const Color(0xFF1E1E1E);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -97,7 +100,7 @@ class UISegmentControl extends StatelessWidget {
                                   ? FontWeight.bold
                                   : FontWeight.normal,
                               color: isSelected
-                                  ? Colors.white
+                                  ? activeTextColor
                                   : (isDark ? Colors.white60 : Colors.black54),
                             ),
                             child: Text(segments[index]),
