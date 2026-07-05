@@ -157,25 +157,34 @@ class UIBottomSheet extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: true,
-      body: Align(
-        alignment: Alignment.bottomCenter,
-        child: Material(
-          color: resolvedBg,
-          type: MaterialType.canvas,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28.0)),
-          clipBehavior: Clip.antiAlias,
-          child: Container(
-            constraints: BoxConstraints(
-              maxHeight: maxSheetHeight,
-            ),
-            child: SafeArea(
-              top: true,
-              bottom:
-                  false, // Handled manually by UISafeBottomSpacing to prevent overlap with gesture line or 3-button nav
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 8.0),
+      body: SafeArea(
+        top: true,
+        bottom: false,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => Navigator.pop(context),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {}, // Intercept tap events inside the bottom sheet card
+              child: Material(
+                color: resolvedBg,
+                type: MaterialType.canvas,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(28.0)),
+                clipBehavior: Clip.antiAlias,
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: maxSheetHeight,
+                  ),
+                  child: SafeArea(
+                    top: false,
+                    bottom:
+                        false, // Handled manually by UISafeBottomSpacing to prevent overlap with gesture line or 3-button nav
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 8.0),
                   // Material 3 Drag Handle
                   Center(
                     child: Container(
@@ -228,6 +237,9 @@ class UIBottomSheet extends StatelessWidget {
           ),
         ),
       ),
+    ),
+  ),
+),
     );
   }
 }
