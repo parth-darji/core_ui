@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../tokens/ui_colors.dart';
 
 /// A premium, beautiful custom divider widget.
 /// It features a soft horizontal color gradient that fades out at the edges

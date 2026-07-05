@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../tokens/ui_typography.dart';
-import 'ui_bounceable.dart';
 
 /// Reusable Cupertino-style Text Button that animates its scale on press and triggers haptics.
 class UITextButton extends StatefulWidget {
