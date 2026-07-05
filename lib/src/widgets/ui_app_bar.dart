@@ -33,7 +33,7 @@ class UIAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GradientBlur(
-      blur: 12.0,
+      maxBlur: 12.0,
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
