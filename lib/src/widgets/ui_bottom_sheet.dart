@@ -150,74 +150,76 @@ class UIBottomSheet extends StatelessWidget {
     // Dynamically constrain sheet height to the visible viewport above the keyboard
     final maxSheetHeight = (screenHeight - keyboardHeight - statusBarHeight - 16.0) * maxHeightMultiplier;
 
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: keyboardHeight,
-      ),
-      child: Material(
-        color: resolvedBg,
-        type: MaterialType.canvas,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(28.0)),
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          constraints: BoxConstraints(
-            maxHeight: maxSheetHeight,
-          ),
-          child: SafeArea(
-            top: false,
-            bottom:
-                false, // Handled manually by UISafeBottomSpacing to prevent overlap with gesture line or 3-button nav
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 8.0),
-                // Material 3 Drag Handle
-                Center(
-                  child: Container(
-                    width: 32.0,
-                    height: 4.0,
-                    decoration: BoxDecoration(
-                      color: isDark ? Colors.white30 : Colors.black12,
-                      borderRadius: BorderRadius.circular(2.0),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: true,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Material(
+          color: resolvedBg,
+          type: MaterialType.canvas,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(28.0)),
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: maxSheetHeight,
+            ),
+            child: SafeArea(
+              top: true,
+              bottom:
+                  false, // Handled manually by UISafeBottomSpacing to prevent overlap with gesture line or 3-button nav
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 8.0),
+                  // Material 3 Drag Handle
+                  Center(
+                    child: Container(
+                      width: 32.0,
+                      height: 4.0,
+                      decoration: BoxDecoration(
+                        color: isDark ? Colors.white30 : Colors.black12,
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 12.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: UITypography.titleLarge.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onSurface,
+                  const SizedBox(height: 12.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: UITypography.titleLarge.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
                           ),
                         ),
-                      ),
-                      if (showCloseButton)
-                        IconButton(
-                          icon: const Icon(Icons.close, size: 20.0),
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                    ],
+                        if (showCloseButton)
+                          IconButton(
+                            icon: const Icon(Icons.close, size: 20.0),
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                const Divider(color: UIColors.separator, height: 1.0),
-                // Main content scrollable if it exceeds bounds
-                Flexible(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 16.0),
-                    child: child,
+                  const Divider(color: UIColors.separator, height: 1.0),
+                  // Main content scrollable if it exceeds bounds
+                  Flexible(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 16.0),
+                      child: child,
+                    ),
                   ),
-                ),
-                // Safe bottom spacing for gesture line / Android 3-button navigation
-                const UISafeBottomSpacing(),
-              ],
+                  // Safe bottom spacing for gesture line / Android 3-button navigation
+                  const UISafeBottomSpacing(),
+                ],
+              ),
             ),
           ),
         ),
