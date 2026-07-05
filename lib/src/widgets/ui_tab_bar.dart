@@ -4,7 +4,7 @@ import '../tokens/ui_typography.dart';
 import 'ui_bounceable.dart';
 
 /// Reusable Tab Bar header widget with animated selection underline indicator.
-class UITabBar extends StatelessWidget {
+class UITabBar extends StatelessWidget implements PreferredSizeWidget {
   final List<String> tabs;
   final int selectedIndex;
   final ValueChanged<int> onTabSelected;
@@ -82,4 +82,7 @@ class UITabBar extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(48.0);
 }
