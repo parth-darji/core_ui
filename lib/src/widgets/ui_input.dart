@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../tokens/ui_typography.dart';
 
 /// Reusable Material 3 text input field styled with design system tokens.
@@ -16,6 +17,7 @@ class UIInput extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final bool readOnly;
   final VoidCallback? onTap;
+  final List<TextInputFormatter>? inputFormatters;
 
   const UIInput({
     super.key,
@@ -32,6 +34,7 @@ class UIInput extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.onTap,
+    this.inputFormatters,
   });
 
   @override
@@ -59,6 +62,7 @@ class UIInput extends StatelessWidget {
             onChanged: onChanged,
             readOnly: readOnly,
             onTap: onTap,
+            inputFormatters: inputFormatters,
             style: UITypography.bodyLarge.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),
