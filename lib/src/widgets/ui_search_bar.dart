@@ -26,7 +26,7 @@ class UISearchBar extends StatelessWidget {
     final resolvedBorderColor = isDark ? Colors.white10 : Colors.black12;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
           color: resolvedBg,

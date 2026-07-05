@@ -40,7 +40,7 @@ class UIInput extends StatelessWidget {
     final resolvedBorderColor = isDark ? Colors.white30 : Colors.black12;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
