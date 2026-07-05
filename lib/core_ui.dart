@@ -7,6 +7,7 @@ export 'src/widgets/ui_app_bar.dart';
 export 'src/widgets/ui_card.dart';
 export 'src/widgets/ui_media_viewer.dart';
 export 'src/widgets/ui_dialog.dart';
+export 'src/widgets/ui_shimmer.dart';
 export 'src/widgets/ui_bottom_sheet.dart';
 export 'src/widgets/ui_input.dart';
 export 'src/widgets/ui_badge.dart';
