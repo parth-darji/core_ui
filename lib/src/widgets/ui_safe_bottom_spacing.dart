@@ -21,7 +21,7 @@ class UISafeBottomSpacing extends StatelessWidget {
     if (view.viewInsets.bottom > 0) {
       return 0.0;
     }
-    final systemBottom = MediaQuery.of(context).padding.bottom;
+    final systemBottom = view.padding.bottom / view.devicePixelRatio;
     return systemBottom > 0 ? systemBottom : fallbackMargin;
   }
 
