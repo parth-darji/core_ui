@@ -143,7 +143,7 @@ class UIBottomSheet extends StatelessWidget {
         isDark ? const Color(0xFF1A1A1A) : UIColors.cardBackground;
 
     // Register dependency on MediaQuery to rebuild when keyboard state changes
-    final mediaQuery = MediaQuery.of(context);
+    MediaQuery.of(context);
 
     final view = View.of(context);
     final pixelRatio = view.devicePixelRatio;
@@ -181,65 +181,66 @@ class UIBottomSheet extends StatelessWidget {
                     top: false,
                     bottom:
                         false, // Handled manually by UISafeBottomSpacing to prevent overlap with gesture line or 3-button nav
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(height: 8.0),
-                  // Material 3 Drag Handle
-                  Center(
-                    child: Container(
-                      width: 32.0,
-                      height: 4.0,
-                      decoration: BoxDecoration(
-                        color: isDark ? Colors.white30 : Colors.black12,
-                        borderRadius: BorderRadius.circular(2.0),
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 8.0),
+                          // Material 3 Drag Handle
+                          Center(
+                            child: Container(
+                              width: 32.0,
+                              height: 4.0,
+                              decoration: BoxDecoration(
+                                color: isDark ? Colors.white30 : Colors.black12,
+                                borderRadius: BorderRadius.circular(2.0),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12.0),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    title,
+                                    style: UITypography.titleLarge.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                    ),
+                                  ),
+                                ),
+                                if (showCloseButton)
+                                  IconButton(
+                                    icon: const Icon(Icons.close, size: 20.0),
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          const Divider(color: UIColors.separator, height: 1.0),
+                          // Main content
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 16.0),
+                            child: child,
+                          ),
+                          // Safe bottom spacing for gesture line / Android 3-button navigation
+                          const UISafeBottomSpacing(),
+                        ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            title,
-                            style: UITypography.titleLarge.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                        ),
-                        if (showCloseButton)
-                          IconButton(
-                            icon: const Icon(Icons.close, size: 20.0),
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                      ],
-                    ),
-                  ),
-                  const Divider(color: UIColors.separator, height: 1.0),
-                  // Main content scrollable if it exceeds bounds
-                  Flexible(
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 16.0),
-                      child: child,
-                    ),
-                  ),
-                  // Safe bottom spacing for gesture line / Android 3-button navigation
-                  const UISafeBottomSpacing(),
-                ],
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  ),
-),
     );
   }
 }
