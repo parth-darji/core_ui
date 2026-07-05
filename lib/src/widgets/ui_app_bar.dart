@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gradient_blur/gradient_blur.dart';
 import '../tokens/ui_typography.dart';
 
 /// Reusable Material 3 AppBar.
@@ -31,26 +32,37 @@ class UIAppBar extends StatelessWidget implements PreferredSizeWidget {
         foregroundColor ?? Theme.of(context).colorScheme.onSurface;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return AppBar(
-      title: Text(
-        title,
-        style: UITypography.titleLarge.copyWith(
-          color: resolvedColor,
-          fontWeight: FontWeight.bold,
-        ),
+    return GradientBlur(
+      blur: 12.0,
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.85),
+          Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.0),
+        ],
       ),
-      leading: leading,
-      actions: actions,
-      centerTitle: centerTitle,
-      backgroundColor: backgroundColor,
-      foregroundColor: resolvedColor,
-      elevation: elevation,
-      scrolledUnderElevation: 0,
-      bottom: bottom,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-        statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
+      child: AppBar(
+        title: Text(
+          title,
+          style: UITypography.titleLarge.copyWith(
+            color: resolvedColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: leading,
+        actions: actions,
+        centerTitle: centerTitle,
+        backgroundColor: Colors.transparent,
+        foregroundColor: resolvedColor,
+        elevation: elevation,
+        scrolledUnderElevation: 0,
+        bottom: bottom,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
+        ),
       ),
     );
   }

@@ -39,7 +39,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.0.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -53,6 +53,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  gradient_blur:
+    dependency: transitive
+    description:
+      name: gradient_blur
+      sha256: "72f5e2fabfa876cad9d0fc38817f82452c75313902b88785435391afabdbb919"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2+1"
   http:
     dependency: transitive
     description:
