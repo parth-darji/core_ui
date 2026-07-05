@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../tokens/ui_colors.dart';
 import '../tokens/ui_typography.dart';
 import 'ui_safe_bottom_spacing.dart';
+import 'ui_divider.dart';
 
 /// A custom PopupRoute that renders a stationary animated blurred backdrop barrier and slides up the sheet.
 class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
@@ -222,7 +223,7 @@ class UIBottomSheet extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const Divider(color: UIColors.separator, height: 1.0),
+                          const UIDivider(height: 1.0),
                           // Main content
                           Padding(
                             padding: const EdgeInsets.symmetric(

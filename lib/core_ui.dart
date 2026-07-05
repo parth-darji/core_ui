@@ -45,3 +45,4 @@ export 'src/widgets/ui_bounceable.dart';
 export 'src/widgets/ui_tooltip_info.dart';
 export 'src/widgets/ui_safe_bottom_spacing.dart';
 export 'src/widgets/ui_table.dart';
+export 'src/widgets/ui_divider.dart';
