@@ -9,6 +9,7 @@ class UITextButton extends StatelessWidget {
   final Widget? prefix;
   final Widget? suffix;
   final Color? textColor;
+  final TextStyle? textStyle;
 
   const UITextButton({
     super.key,
@@ -17,6 +18,7 @@ class UITextButton extends StatelessWidget {
     this.prefix,
     this.suffix,
     this.textColor,
+    this.textStyle,
   });
 
   @override
@@ -40,9 +42,9 @@ class UITextButton extends StatelessWidget {
               ],
               Text(
                 text,
-                style: UITypography.bodyLarge.copyWith(
+                style: (textStyle ?? UITypography.bodyLarge).copyWith(
                   color: isInteractive ? resolvedFg : Colors.grey.shade400,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: textStyle?.fontWeight ?? FontWeight.w600,
                 ),
               ),
               if (suffix != null) ...[
