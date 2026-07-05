@@ -142,9 +142,17 @@ class UIBottomSheet extends StatelessWidget {
     final resolvedBg =
         isDark ? const Color(0xFF1A1A1A) : UIColors.cardBackground;
 
+    final mediaQuery = MediaQuery.of(context);
+    final screenHeight = mediaQuery.size.height;
+    final keyboardHeight = mediaQuery.viewInsets.bottom;
+    final statusBarHeight = mediaQuery.padding.top;
+
+    // Dynamically constrain sheet height to the visible viewport above the keyboard
+    final maxSheetHeight = (screenHeight - keyboardHeight - statusBarHeight - 16.0) * maxHeightMultiplier;
+
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
+        bottom: keyboardHeight,
       ),
       child: Material(
         color: resolvedBg,
@@ -153,7 +161,7 @@ class UIBottomSheet extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Container(
           constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * maxHeightMultiplier,
+            maxHeight: maxSheetHeight,
           ),
           child: SafeArea(
             top: false,
