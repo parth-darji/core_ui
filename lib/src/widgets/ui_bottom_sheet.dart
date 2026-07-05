@@ -12,6 +12,7 @@ class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
   final bool showCloseButton;
   final double maxHeightMultiplier;
   final bool showDivider;
+  final Widget? actionButton;
 
   BlurredBottomSheetRoute({
     required this.child,
@@ -19,6 +20,7 @@ class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
     required this.showCloseButton,
     required this.maxHeightMultiplier,
     required this.showDivider,
+    this.actionButton,
     super.settings,
   });
 
@@ -48,6 +50,7 @@ class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
       showCloseButton: showCloseButton,
       maxHeightMultiplier: maxHeightMultiplier,
       showDivider: showDivider,
+      actionButton: actionButton,
       child: child,
     );
   }
@@ -111,6 +114,7 @@ class UIBottomSheet extends StatelessWidget {
   final bool showCloseButton;
   final double maxHeightMultiplier;
   final bool showDivider;
+  final Widget? actionButton;
 
   const UIBottomSheet({
     super.key,
@@ -119,6 +123,7 @@ class UIBottomSheet extends StatelessWidget {
     this.showCloseButton = true,
     this.maxHeightMultiplier = 0.85,
     this.showDivider = true,
+    this.actionButton,
   });
 
   /// Helper to trigger the bottom sheet natively in context
@@ -126,6 +131,7 @@ class UIBottomSheet extends StatelessWidget {
     required BuildContext context,
     required String title,
     required Widget child,
+    Widget? actionButton,
     bool showCloseButton = true,
     double maxHeightMultiplier = 0.85,
     bool isDismissible = true,
@@ -139,6 +145,7 @@ class UIBottomSheet extends StatelessWidget {
         showCloseButton: showCloseButton,
         maxHeightMultiplier: maxHeightMultiplier,
         showDivider: showDivider,
+        actionButton: actionButton,
         child: child,
       ),
     );
@@ -187,60 +194,98 @@ class UIBottomSheet extends StatelessWidget {
                   ),
                   child: SafeArea(
                     top: false,
-                    bottom:
-                        false, // Handled manually by UISafeBottomSpacing to prevent overlap with gesture line or 3-button nav
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const SizedBox(height: 8.0),
-                          // Material 3 Drag Handle
-                          Center(
-                            child: Container(
-                              width: 32.0,
-                              height: 4.0,
-                              decoration: BoxDecoration(
-                                color: isDark ? Colors.white30 : Colors.black12,
-                                borderRadius: BorderRadius.circular(2.0),
-                              ),
+                    bottom: false,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 8.0),
+                        // Material 3 Drag Handle (Sticky)
+                        Center(
+                          child: Container(
+                            width: 32.0,
+                            height: 4.0,
+                            decoration: BoxDecoration(
+                              color: isDark ? Colors.white30 : Colors.black12,
+                              borderRadius: BorderRadius.circular(2.0),
                             ),
                           ),
-                          const SizedBox(height: 12.0),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    title,
-                                    style: UITypography.titleLarge.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        const SizedBox(height: 12.0),
+                        // Sticky Header title row
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  title,
+                                  style: UITypography.titleLarge.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ),
+                              ),
+                              if (showCloseButton)
+                                IconButton(
+                                  icon: const Icon(Icons.close, size: 20.0),
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                            ],
+                          ),
+                        ),
+                        if (showDivider) const UIDivider(height: 1.0),
+                        // Scrollable Content & Overlay Action Button inside a Flexible stack
+                        Flexible(
+                          child: Stack(
+                            children: [
+                              SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
+                                padding: EdgeInsets.only(
+                                  left: 20.0,
+                                  right: 20.0,
+                                  top: 16.0,
+                                  bottom: actionButton != null ? 84.0 : 24.0,
+                                ),
+                                child: child,
+                              ),
+                              if (actionButton != null)
+                                Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                        colors: [
+                                          resolvedBg,
+                                          resolvedBg,
+                                          resolvedBg.withValues(alpha: 0.9),
+                                          resolvedBg.withValues(alpha: 0.0),
+                                        ],
+                                        stops: const [0.0, 0.4, 0.7, 1.0],
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.only(
+                                      left: 20.0,
+                                      right: 20.0,
+                                      bottom: 20.0,
+                                      top: 32.0,
+                                    ),
+                                    child: SafeArea(
+                                      top: false,
+                                      child: actionButton!,
                                     ),
                                   ),
                                 ),
-                                if (showCloseButton)
-                                  IconButton(
-                                    icon: const Icon(Icons.close, size: 20.0),
-                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                              ],
-                            ),
+                            ],
                           ),
-                          if (showDivider) const UIDivider(height: 1.0),
-                          // Main content
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 16.0),
-                            child: child,
-                          ),
-                          // Safe bottom spacing for gesture line / Android 3-button navigation
-                          const UISafeBottomSpacing(),
-                        ],
-                      ),
+                        ),
+                        if (actionButton == null) const UISafeBottomSpacing(),
+                      ],
                     ),
                   ),
                 ),
