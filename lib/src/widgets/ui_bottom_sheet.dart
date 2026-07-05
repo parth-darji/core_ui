@@ -11,12 +11,14 @@ class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
   final String title;
   final bool showCloseButton;
   final double maxHeightMultiplier;
+  final bool showDivider;
 
   BlurredBottomSheetRoute({
     required this.child,
     required this.title,
     required this.showCloseButton,
     required this.maxHeightMultiplier,
+    required this.showDivider,
     super.settings,
   });
 
@@ -45,6 +47,7 @@ class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
       title: title,
       showCloseButton: showCloseButton,
       maxHeightMultiplier: maxHeightMultiplier,
+      showDivider: showDivider,
       child: child,
     );
   }
@@ -107,6 +110,7 @@ class UIBottomSheet extends StatelessWidget {
   final Widget child;
   final bool showCloseButton;
   final double maxHeightMultiplier;
+  final bool showDivider;
 
   const UIBottomSheet({
     super.key,
@@ -114,6 +118,7 @@ class UIBottomSheet extends StatelessWidget {
     required this.child,
     this.showCloseButton = true,
     this.maxHeightMultiplier = 0.85,
+    this.showDivider = true,
   });
 
   /// Helper to trigger the bottom sheet natively in context
@@ -125,6 +130,7 @@ class UIBottomSheet extends StatelessWidget {
     double maxHeightMultiplier = 0.85,
     bool isDismissible = true,
     bool enableDrag = true,
+    bool showDivider = true,
   }) {
     return Navigator.push<T>(
       context,
@@ -132,6 +138,7 @@ class UIBottomSheet extends StatelessWidget {
         title: title,
         showCloseButton: showCloseButton,
         maxHeightMultiplier: maxHeightMultiplier,
+        showDivider: showDivider,
         child: child,
       ),
     );
@@ -223,7 +230,7 @@ class UIBottomSheet extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const UIDivider(height: 1.0),
+                          if (showDivider) const UIDivider(height: 1.0),
                           // Main content
                           Padding(
                             padding: const EdgeInsets.symmetric(
