@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../tokens/ui_colors.dart';
 import '../tokens/ui_typography.dart';
 
 /// Reusable Snackbar builder styled with design system tokens.
@@ -10,45 +11,111 @@ class UISnackbar {
     BuildContext context, {
     required String message,
     bool isError = false,
-    Duration duration = const Duration(seconds: 3),
+    Duration duration = const Duration(seconds: 4),
     String? actionLabel,
     VoidCallback? onActionPressed,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final resolvedBg = isError
-        ? Theme.of(context).colorScheme.error
-        : (isDark
-            ? const Color(0xFF2A2A2A)
-            : Theme.of(context).colorScheme.primary);
-    final resolvedFg = Colors.white;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          style: UITypography.bodyMedium.copyWith(
-            color: resolvedFg,
-            fontWeight: FontWeight.w600,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.zero,
+        duration: duration,
+        content: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: isError
+                ? (isDark
+                    ? const Color(0xFF2C1616)
+                    : const Color(0xFFFFF5F5))
+                : (isDark
+                    ? const Color(0xFF1E293B)
+                    : UIColors.systemBackground),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isError
+                  ? UIColors.lotusRose.withValues(alpha: 0.4)
+                  : theme.colorScheme.primary.withValues(alpha: 0.15),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 16,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isError
+                      ? UIColors.lotusRose.withValues(alpha: 0.15)
+                      : theme.colorScheme.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  isError ? Icons.error_outline_rounded : Icons.info_outline_rounded,
+                  color: isError ? UIColors.lotusRose : theme.colorScheme.primary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      isError ? 'Error Notification' : 'Information',
+                      style: UITypography.bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: isError
+                            ? (isDark ? Colors.white : const Color(0xFFC62828))
+                            : (isDark ? Colors.white : UIColors.textPrimary),
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      message,
+                      style: UITypography.bodySmall.copyWith(
+                        color: isError
+                            ? (isDark ? UIColors.lotusRose : const Color(0xFFB71C1C))
+                            : (isDark ? Colors.grey[300] : UIColors.textSecondary),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (actionLabel != null && onActionPressed != null) ...[
+                const SizedBox(width: 8),
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    onActionPressed();
+                  },
+                  child: Text(
+                    actionLabel,
+                    style: UITypography.bodyMedium.copyWith(
+                      color: isError
+                          ? Colors.white
+                          : theme.colorScheme.secondary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ],
           ),
         ),
-        backgroundColor: resolvedBg,
-        duration: duration,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(16.0),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-        action: actionLabel != null && onActionPressed != null
-            ? SnackBarAction(
-                label: actionLabel,
-                textColor: isError
-                    ? Colors.white
-                    : Theme.of(context).colorScheme.secondary,
-                onPressed: onActionPressed,
-              )
-            : null,
       ),
     );
   }
