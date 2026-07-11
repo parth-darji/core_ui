@@ -103,7 +103,10 @@ class UISegmentControl extends StatelessWidget implements PreferredSizeWidget {
                                   ? activeTextColor
                                   : (isDark ? Colors.white60 : Colors.black54),
                             ),
-                            child: Text(segments[index]),
+                            child: Text(
+                              segments[index],
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),

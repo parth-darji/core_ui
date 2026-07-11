@@ -246,7 +246,7 @@ class UIBottomSheet extends StatelessWidget {
                                   left: 20.0,
                                   right: 20.0,
                                   top: 16.0,
-                                  bottom: actionButton != null ? 84.0 : 24.0,
+                                  bottom: actionButton != null ? 140.0 : 24.0,
                                 ),
                                 child: child,
                               ),
