@@ -10,6 +10,7 @@ class UISnackbar {
   static void show(
     BuildContext context, {
     required String message,
+    String? title,
     bool isError = false,
     Duration duration = const Duration(seconds: 4),
     String? actionLabel,
@@ -75,7 +76,7 @@ class UISnackbar {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      isError ? 'Error Notification' : 'Information',
+                      title ?? (isError ? 'Error' : 'Notice'),
                       style: UITypography.bodyMedium.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isError
