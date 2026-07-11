@@ -11,6 +11,7 @@ class UISnackbar {
     BuildContext context, {
     required String message,
     String? title,
+    String? errorCode,
     bool isError = false,
     Duration duration = const Duration(seconds: 4),
     String? actionLabel,
@@ -18,6 +19,24 @@ class UISnackbar {
   }) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+
+    String? resolvedErrorCode = errorCode;
+    if (isError && resolvedErrorCode == null) {
+      final msg = message.toLowerCase();
+      if (msg.contains('401') || msg.contains('unauthorized') || msg.contains('invalid email')) {
+        resolvedErrorCode = 'ERR-401';
+      } else if (msg.contains('409') || msg.contains('conflict') || msg.contains('registered')) {
+        resolvedErrorCode = 'ERR-409';
+      } else if (msg.contains('403') || msg.contains('forbidden')) {
+        resolvedErrorCode = 'ERR-403';
+      } else if (msg.contains('404') || msg.contains('not found')) {
+        resolvedErrorCode = 'ERR-404';
+      } else if (msg.contains('timeout') || msg.contains('connection') || msg.contains('refused') || msg.contains('socket')) {
+        resolvedErrorCode = 'ERR-CONN';
+      } else {
+        resolvedErrorCode = 'ERR-UNKNOWN';
+      }
+    }
 
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -76,7 +95,9 @@ class UISnackbar {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      title ?? (isError ? 'Error' : 'Notice'),
+                      title ?? (isError
+                          ? (resolvedErrorCode != null ? 'Error (Code: $resolvedErrorCode)' : 'Error')
+                          : 'Notice'),
                       style: UITypography.bodyMedium.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isError
