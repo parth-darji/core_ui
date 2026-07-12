@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../tokens/ui_colors.dart';
 
 /// A premium, beautiful custom divider widget.
 /// It features a crisp, clean horizontal divider line.
@@ -23,7 +24,9 @@ class UIDivider extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     
-    final baseColor = color ?? (isDark ? Colors.white12 : Colors.black12);
+    final baseColor = (color == null || color == UIColors.separator)
+        ? (isDark ? Colors.white12 : UIColors.separator)
+        : color!;
 
     return Padding(
       padding: EdgeInsets.only(left: indent, right: endIndent),
