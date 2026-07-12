@@ -183,6 +183,24 @@ void main() {
       expect(find.byType(UISpacing), findsOneWidget);
     });
 
+    testWidgets('UIDivider renders correctly', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: UIDivider(
+              height: 20,
+              thickness: 2,
+              indent: 10,
+              endIndent: 10,
+              color: Colors.red,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(UIDivider), findsOneWidget);
+    });
+
     testWidgets('UICheckbox toggles value on tap', (WidgetTester tester) async {
       bool checked = false;
       await tester.pumpWidget(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// A premium, beautiful custom divider widget.
-/// It features a soft horizontal color gradient that fades out at the edges
-/// combined with a subtle glowing/blurred light accent shadow behind it.
+/// It features a crisp, clean horizontal divider line.
 class UIDivider extends StatelessWidget {
   final double height;
   final double thickness;
@@ -24,55 +23,16 @@ class UIDivider extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     
-    // Choose soft glowing light colors for the gradient
-    final baseColor = color ?? (isDark ? Colors.white24 : Colors.black12);
-    final glowColor = isDark 
-        ? theme.colorScheme.primary.withValues(alpha: 0.2)
-        : theme.colorScheme.primary.withValues(alpha: 0.1);
+    final baseColor = color ?? (isDark ? Colors.white12 : Colors.black12);
 
     return Padding(
       padding: EdgeInsets.only(left: indent, right: endIndent),
       child: Container(
         height: height,
         alignment: Alignment.center,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Soft glowing backdrop blur container
-            Container(
-              height: thickness * 4.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(thickness * 2.0),
-                gradient: LinearGradient(
-                  colors: [
-                    glowColor.withValues(alpha: 0.0),
-                    glowColor,
-                    glowColor.withValues(alpha: 0.0),
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: glowColor,
-                    blurRadius: 8.0,
-                    spreadRadius: 1.0,
-                  ),
-                ],
-              ),
-            ),
-            // The precise, razor-sharp gradient divider line
-            Container(
-              height: thickness,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    baseColor.withValues(alpha: 0.0),
-                    baseColor,
-                    baseColor.withValues(alpha: 0.0),
-                  ],
-                ),
-              ),
-            ),
-          ],
+        child: Container(
+          height: thickness,
+          color: baseColor,
         ),
       ),
     );
