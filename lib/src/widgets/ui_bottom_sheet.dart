@@ -234,10 +234,25 @@ class UIBottomSheet extends StatelessWidget {
                                 ),
                               ),
                               if (showCloseButton)
-                                IconButton(
-                                  icon: const Icon(Icons.close, size: 20.0),
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                  onPressed: () => Navigator.pop(context),
+                                GestureDetector(
+                                  onTap: () => Navigator.pop(context),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6.0),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.08),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      Icons.close,
+                                      size: 18.0,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                                  ),
                                 ),
                             ],
                           ),
