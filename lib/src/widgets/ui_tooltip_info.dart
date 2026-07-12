@@ -278,8 +278,16 @@ class UITooltipInfo extends StatelessWidget {
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
+        const paddingX = 8.0;
+        const paddingY = 4.0;
+        final holeRect = Rect.fromLTWH(
+          offset.dx - paddingX,
+          offset.dy - paddingY,
+          size.width + (paddingX * 2),
+          size.height + (paddingY * 2),
+        );
         final holeRadius =
-            (size.width - size.height).abs() < 2.0 ? size.width / 2 : 8.0;
+            (size.width - size.height).abs() < 2.0 ? holeRect.width / 2 : 10.0;
 
         return Stack(
           children: [
@@ -288,12 +296,7 @@ class UITooltipInfo extends StatelessWidget {
             Positioned.fill(
               child: ClipPath(
                 clipper: HoleClipper(
-                  holeRect: Rect.fromLTWH(
-                    offset.dx,
-                    offset.dy,
-                    size.width,
-                    size.height,
-                  ),
+                  holeRect: holeRect,
                   borderRadius: holeRadius,
                 ),
                 child: IgnorePointer(

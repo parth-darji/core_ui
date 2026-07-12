@@ -50,6 +50,7 @@ class UIFilledButton extends StatelessWidget {
       onTap: isInteractive ? onPressed : null,
       child: Container(
         height: height,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         decoration: BoxDecoration(
           color: containerBg,
           borderRadius: BorderRadius.circular(borderRadius),
