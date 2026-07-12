@@ -6,6 +6,7 @@ import 'ui_filled_button.dart';
 class UIErrorState extends StatelessWidget {
   final String title;
   final String message;
+  final String? errorCode;
   final Widget? icon;
   final String? actionLabel;
   final VoidCallback? onActionPressed;
@@ -14,6 +15,7 @@ class UIErrorState extends StatelessWidget {
     super.key,
     this.title = 'An error occurred',
     required this.message,
+    this.errorCode,
     this.icon,
     this.actionLabel,
     this.onActionPressed,
@@ -58,6 +60,17 @@ class UIErrorState extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
+            if (errorCode != null && errorCode!.isNotEmpty) ...[
+              const SizedBox(height: 8.0),
+              Text(
+                'Error Code: $errorCode',
+                style: UITypography.bodySmall.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
             if (actionLabel != null && onActionPressed != null) ...[
               const SizedBox(height: 24.0),
               UIFilledButton(

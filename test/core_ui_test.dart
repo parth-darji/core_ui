@@ -487,6 +487,7 @@ void main() {
             body: UIErrorState(
               title: 'Error Header',
               message: 'Detailed error message description',
+              errorCode: 'ERR_500',
               actionLabel: 'RETRY ACTION',
               onActionPressed: () {
                 pressed = true;
@@ -498,6 +499,7 @@ void main() {
 
       expect(find.text('Error Header'), findsOneWidget);
       expect(find.text('Detailed error message description'), findsOneWidget);
+      expect(find.text('Error Code: ERR_500'), findsOneWidget);
       expect(find.text('RETRY ACTION'), findsOneWidget);
       expect(pressed, isFalse);
 
