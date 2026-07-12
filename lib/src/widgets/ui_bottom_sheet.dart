@@ -9,6 +9,7 @@ import 'ui_divider.dart';
 class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
   final Widget child;
   final String title;
+  final Widget? titleWidget;
   final bool showCloseButton;
   final double maxHeightMultiplier;
   final bool showDivider;
@@ -17,6 +18,7 @@ class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
   BlurredBottomSheetRoute({
     required this.child,
     required this.title,
+    this.titleWidget,
     required this.showCloseButton,
     required this.maxHeightMultiplier,
     required this.showDivider,
@@ -47,6 +49,7 @@ class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
   ) {
     return UIBottomSheet(
       title: title,
+      titleWidget: titleWidget,
       showCloseButton: showCloseButton,
       maxHeightMultiplier: maxHeightMultiplier,
       showDivider: showDivider,
@@ -110,6 +113,7 @@ class BlurredBottomSheetRoute<T> extends PopupRoute<T> {
 /// Reusable Material 3 Bottom Sheet template with standard dragging handle.
 class UIBottomSheet extends StatelessWidget {
   final String title;
+  final Widget? titleWidget;
   final Widget child;
   final bool showCloseButton;
   final double maxHeightMultiplier;
@@ -119,6 +123,7 @@ class UIBottomSheet extends StatelessWidget {
   const UIBottomSheet({
     super.key,
     required this.title,
+    this.titleWidget,
     required this.child,
     this.showCloseButton = true,
     this.maxHeightMultiplier = 0.85,
@@ -131,6 +136,7 @@ class UIBottomSheet extends StatelessWidget {
     required BuildContext context,
     required String title,
     required Widget child,
+    Widget? titleWidget,
     Widget? actionButton,
     bool showCloseButton = true,
     double maxHeightMultiplier = 0.85,
@@ -142,6 +148,7 @@ class UIBottomSheet extends StatelessWidget {
       context,
       BlurredBottomSheetRoute<T>(
         title: title,
+        titleWidget: titleWidget,
         showCloseButton: showCloseButton,
         maxHeightMultiplier: maxHeightMultiplier,
         showDivider: showDivider,
@@ -218,7 +225,7 @@ class UIBottomSheet extends StatelessWidget {
                           child: Row(
                             children: [
                               Expanded(
-                                child: Text(
+                                child: titleWidget ?? Text(
                                   title,
                                   style: UITypography.titleLarge.copyWith(
                                     fontWeight: FontWeight.bold,
