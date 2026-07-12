@@ -279,11 +279,12 @@ class UIBottomSheet extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                       left: 20.0,
                                       right: 20.0,
-                                      bottom: 20.0,
                                       top: 32.0,
                                     ),
-                                    child: SafeArea(
-                                      top: false,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: UISafeBottomSpacing.getPadding(context, fallbackMargin: 20.0),
+                                      ),
                                       child: actionButton!,
                                     ),
                                   ),
