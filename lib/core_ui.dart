@@ -17,6 +17,7 @@ export 'src/widgets/ui_segment_control.dart';
 export 'src/widgets/ui_switch.dart';
 export 'src/widgets/ui_loading.dart';
 export 'src/widgets/ui_empty_state.dart';
+export 'src/widgets/ui_error_state.dart';
 export 'src/widgets/ui_snackbar.dart';
 export 'src/widgets/ui_search_bar.dart';
 export 'src/widgets/ui_filter_chip.dart';

@@ -477,5 +477,33 @@ void main() {
 
       await tester.pumpAndSettle();
     });
+
+    testWidgets('UIErrorState renders title, message, and triggers action button',
+        (WidgetTester tester) async {
+      bool pressed = false;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: UIErrorState(
+              title: 'Error Header',
+              message: 'Detailed error message description',
+              actionLabel: 'RETRY ACTION',
+              onActionPressed: () {
+                pressed = true;
+              },
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Error Header'), findsOneWidget);
+      expect(find.text('Detailed error message description'), findsOneWidget);
+      expect(find.text('RETRY ACTION'), findsOneWidget);
+      expect(pressed, isFalse);
+
+      await tester.tap(find.text('RETRY ACTION'));
+      await tester.pump();
+      expect(pressed, isTrue);
+    });
   });
 }
