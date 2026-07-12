@@ -13,6 +13,7 @@ class UISnackbar {
     String? title,
     String? errorCode,
     bool isError = false,
+    bool isSuccess = false,
     Duration duration = const Duration(seconds: 4),
     String? actionLabel,
     VoidCallback? onActionPressed,
@@ -54,14 +55,20 @@ class UISnackbar {
                 ? (isDark
                     ? const Color(0xFF2C1616)
                     : const Color(0xFFFFF5F5))
-                : (isDark
-                    ? const Color(0xFF1E293B)
-                    : UIColors.systemBackground),
+                : isSuccess
+                    ? (isDark
+                        ? const Color(0xFF142C14)
+                        : const Color(0xFFF4FBF4))
+                    : (isDark
+                        ? const Color(0xFF1E293B)
+                        : UIColors.systemBackground),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isError
                   ? UIColors.lotusRose.withValues(alpha: 0.4)
-                  : theme.colorScheme.primary.withValues(alpha: 0.15),
+                  : isSuccess
+                      ? Colors.green.withValues(alpha: 0.4)
+                      : theme.colorScheme.primary.withValues(alpha: 0.15),
               width: 1.5,
             ),
             boxShadow: [
@@ -79,12 +86,22 @@ class UISnackbar {
                 decoration: BoxDecoration(
                   color: isError
                       ? UIColors.lotusRose.withValues(alpha: 0.15)
-                      : theme.colorScheme.primary.withValues(alpha: 0.1),
+                      : isSuccess
+                          ? Colors.green.withValues(alpha: 0.15)
+                          : theme.colorScheme.primary.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  isError ? Icons.error_outline_rounded : Icons.info_outline_rounded,
-                  color: isError ? UIColors.lotusRose : theme.colorScheme.primary,
+                  isError
+                      ? Icons.error_outline_rounded
+                      : isSuccess
+                          ? Icons.check_circle_outline_rounded
+                          : Icons.info_outline_rounded,
+                  color: isError
+                      ? UIColors.lotusRose
+                      : isSuccess
+                          ? Colors.green
+                          : theme.colorScheme.primary,
                   size: 20,
                 ),
               ),
@@ -97,12 +114,16 @@ class UISnackbar {
                     Text(
                       title ?? (isError
                           ? (resolvedErrorCode != null ? 'Error (Code: $resolvedErrorCode)' : 'Error')
-                          : 'Notice'),
+                          : isSuccess
+                              ? 'Success'
+                              : 'Notice'),
                       style: UITypography.bodyMedium.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isError
                             ? (isDark ? Colors.white : const Color(0xFFC62828))
-                            : (isDark ? Colors.white : UIColors.textPrimary),
+                            : isSuccess
+                                ? (isDark ? Colors.white : const Color(0xFF2E7D32))
+                                : (isDark ? Colors.white : UIColors.textPrimary),
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -111,7 +132,9 @@ class UISnackbar {
                       style: UITypography.bodySmall.copyWith(
                         color: isError
                             ? (isDark ? UIColors.lotusRose : const Color(0xFFB71C1C))
-                            : (isDark ? Colors.grey[300] : UIColors.textSecondary),
+                            : isSuccess
+                                ? (isDark ? Colors.green[200] : const Color(0xFF1B5E20))
+                                : (isDark ? Colors.grey[300] : UIColors.textSecondary),
                       ),
                     ),
                   ],

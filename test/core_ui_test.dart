@@ -533,5 +533,37 @@ void main() {
       await tester.pump();
       expect(pressed, isTrue);
     });
+
+    testWidgets('UISnackbar renders normal, error and success variants',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    UISnackbar.show(
+                      context,
+                      message: 'Test message',
+                      title: 'Test Title',
+                      isSuccess: true,
+                    );
+                  },
+                  child: const Text('SHOW'),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('SHOW'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Test Title'), findsOneWidget);
+      expect(find.text('Test message'), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle_outline_rounded), findsOneWidget);
+    });
   });
 }
