@@ -507,5 +507,31 @@ void main() {
       await tester.pump();
       expect(pressed, isTrue);
     });
+
+    testWidgets('UIOutlinedButton renders text and prefix icon and handles taps',
+        (WidgetTester tester) async {
+      bool pressed = false;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: UIOutlinedButton(
+              text: 'CANCEL',
+              prefix: const Icon(Icons.close),
+              onPressed: () {
+                pressed = true;
+              },
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('CANCEL'), findsOneWidget);
+      expect(find.byIcon(Icons.close), findsOneWidget);
+      expect(pressed, isFalse);
+
+      await tester.tap(find.text('CANCEL'));
+      await tester.pump();
+      expect(pressed, isTrue);
+    });
   });
 }

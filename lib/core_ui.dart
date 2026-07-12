@@ -2,6 +2,7 @@ export 'src/tokens/ui_colors.dart';
 export 'src/tokens/ui_typography.dart';
 export 'src/theme/ui_theme.dart';
 export 'src/widgets/ui_filled_button.dart';
+export 'src/widgets/ui_outlined_button.dart';
 export 'src/widgets/ui_text_button.dart';
 export 'src/widgets/ui_app_bar.dart';
 export 'src/widgets/ui_card.dart';
