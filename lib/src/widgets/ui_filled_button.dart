@@ -65,30 +65,33 @@ class UIFilledButton extends StatelessWidget {
                     valueColor: AlwaysStoppedAnimation<Color>(contentColor),
                   ),
                 )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (prefix != null) ...[
-                      prefix!,
-                      const SizedBox(width: 8.0),
-                    ],
-                    Flexible(
-                      child: Text(
-                        text,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: UITypography.titleMedium.copyWith(
-                          color: contentColor,
-                          fontWeight: FontWeight.bold,
+              : IconTheme(
+                  data: IconThemeData(color: contentColor, size: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (prefix != null) ...[
+                        prefix!,
+                        const SizedBox(width: 8.0),
+                      ],
+                      Flexible(
+                        child: Text(
+                          text,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: UITypography.titleMedium.copyWith(
+                            color: contentColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    if (suffix != null) ...[
-                      const SizedBox(width: 8.0),
-                      suffix!,
+                      if (suffix != null) ...[
+                        const SizedBox(width: 8.0),
+                        suffix!,
+                      ],
                     ],
-                  ],
+                  ),
                 ),
         ),
       ),
