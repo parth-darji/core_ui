@@ -198,6 +198,7 @@ class UIBottomSheet extends StatelessWidget {
                 child: Container(
                   constraints: BoxConstraints(
                     maxHeight: maxSheetHeight,
+                    maxWidth: 640.0,
                   ),
                   child: SafeArea(
                     top: false,
