@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../tokens/ui_typography.dart';
+import 'ui_bounceable.dart';
 
-/// Reusable Floating Action Button (FAB) configured with M3 standard sizes.
+/// Reusable Floating Action Button (FAB) configured with M3 standard sizes and premium bounce feedback.
 class UIFloatingActionButton extends StatelessWidget {
   final Widget icon;
   final String? label;
@@ -27,27 +28,30 @@ class UIFloatingActionButton extends StatelessWidget {
     final resolvedBg = backgroundColor ?? defaultBg;
     final resolvedFg = foregroundColor ?? defaultFg;
 
-    if (isExtended) {
-      return FloatingActionButton.extended(
-        onPressed: onPressed,
-        backgroundColor: resolvedBg,
-        foregroundColor: resolvedFg,
-        icon: icon,
-        label: Text(
-          label!,
-          style: UITypography.labelLarge.copyWith(
-            fontWeight: FontWeight.bold,
-            color: resolvedFg,
-          ),
-        ),
-      );
-    }
+    final fab = isExtended
+        ? FloatingActionButton.extended(
+            onPressed: () {}, // dummy callback to keep active styles
+            backgroundColor: resolvedBg,
+            foregroundColor: resolvedFg,
+            icon: icon,
+            label: Text(
+              label!,
+              style: UITypography.labelLarge.copyWith(
+                fontWeight: FontWeight.bold,
+                color: resolvedFg,
+              ),
+            ),
+          )
+        : FloatingActionButton(
+            onPressed: () {}, // dummy callback to keep active styles
+            backgroundColor: resolvedBg,
+            foregroundColor: resolvedFg,
+            child: icon,
+          );
 
-    return FloatingActionButton(
-      onPressed: onPressed,
-      backgroundColor: resolvedBg,
-      foregroundColor: resolvedFg,
-      child: icon,
+    return UIBounceable(
+      onTap: onPressed,
+      child: fab,
     );
   }
 }
