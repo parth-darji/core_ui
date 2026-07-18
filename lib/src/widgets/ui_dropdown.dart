@@ -11,6 +11,7 @@ class UIDropdown<T> extends StatelessWidget {
   final ValueChanged<T?> onChanged;
   final String labelText;
   final String? hintText;
+  final String? errorText;
 
   const UIDropdown({
     super.key,
@@ -19,6 +20,7 @@ class UIDropdown<T> extends StatelessWidget {
     required this.onChanged,
     required this.labelText,
     this.hintText,
+    this.errorText,
   });
 
   void _showOptionsDialog(BuildContext context) {
@@ -146,7 +148,10 @@ class UIDropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final resolvedBorderColor = isDark ? Colors.white30 : Colors.black12;
+    final hasError = errorText != null && errorText!.isNotEmpty;
+    final resolvedBorderColor = hasError
+        ? Theme.of(context).colorScheme.error
+        : (isDark ? Colors.white30 : Colors.black12);
 
     final selectedItem = items.cast<DropdownMenuItem<T>?>().firstWhere(
           (item) => item?.value == value,
@@ -175,7 +180,10 @@ class UIDropdown<T> extends StatelessWidget {
                 color:
                     isDark ? const Color(0xFF222222) : const Color(0xFFF4F6F6),
                 borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(color: resolvedBorderColor),
+                border: Border.all(
+                  color: resolvedBorderColor,
+                  width: hasError ? 1.5 : 1.0,
+                ),
               ),
               child: Row(
                 children: [
@@ -196,12 +204,26 @@ class UIDropdown<T> extends StatelessWidget {
                   ),
                   Icon(
                     Icons.unfold_more,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: hasError
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.primary,
                   ),
                 ],
               ),
             ),
           ),
+          if (hasError) ...[
+            const SizedBox(height: 6.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: Text(
+                errorText!,
+                style: UITypography.bodySmall.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
