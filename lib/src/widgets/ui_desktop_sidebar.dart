@@ -6,12 +6,14 @@ class UIDesktopSidebarItem {
   final IconData icon;
   final IconData? selectedIcon;
   final String? badgeText;
+  final List<UIDesktopSidebarItem>? subItems;
 
   const UIDesktopSidebarItem({
     required this.label,
     required this.icon,
     this.selectedIcon,
     this.badgeText,
+    this.subItems,
   });
 }
 
@@ -33,6 +35,42 @@ class UIDesktopSidebar extends StatelessWidget {
     required this.onItemSelected,
     this.profileFooter,
   });
+
+  List<Widget> _buildSidebarItems(BuildContext context, ThemeData theme) {
+    final list = <Widget>[];
+    int currentIndexCounter = 0;
+
+    for (final item in items) {
+      if (item.subItems == null || item.subItems!.isEmpty) {
+        final localIndex = currentIndexCounter;
+        final isSelected = localIndex == selectedIndex;
+        list.add(
+          _FlatSidebarItem(
+            item: item,
+            isSelected: isSelected,
+            onTap: () => onItemSelected(localIndex),
+          ),
+        );
+        list.add(const SizedBox(height: 4));
+        currentIndexCounter++;
+      } else {
+        final groupStartIndex = currentIndexCounter;
+        final subItemsCount = item.subItems!.length;
+        list.add(
+          _SidebarGroup(
+            item: item,
+            selectedIndex: selectedIndex,
+            startIndex: groupStartIndex,
+            onItemSelected: onItemSelected,
+          ),
+        );
+        list.add(const SizedBox(height: 4));
+        currentIndexCounter += subItemsCount;
+      }
+    }
+
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,80 +137,11 @@ class UIDesktopSidebar extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Expanded(
-            child: ListView.separated(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              itemCount: items.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 4),
-              itemBuilder: (context, index) {
-                final item = items[index];
-                final isSelected = index == selectedIndex;
-
-                return Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () => onItemSelected(index),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 150),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 11,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? theme.colorScheme.primary.withValues(alpha: 0.12)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            isSelected
-                                ? (item.selectedIcon ?? item.icon)
-                                : item.icon,
-                            size: 20,
-                            color: isSelected
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              item.label,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.w500,
-                                color: isSelected
-                                    ? theme.colorScheme.primary
-                                    : theme.colorScheme.onSurface,
-                              ),
-                            ),
-                          ),
-                          if (item.badgeText != null)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                item.badgeText!,
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
+              child: Column(
+                children: _buildSidebarItems(context, theme),
+              ),
             ),
           ),
           if (profileFooter != null)
@@ -182,6 +151,242 @@ class UIDesktopSidebar extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+class _FlatSidebarItem extends StatelessWidget {
+  final UIDesktopSidebarItem item;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _FlatSidebarItem({
+    required this.item,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 11,
+          ),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? theme.colorScheme.primary.withValues(alpha: 0.12)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                isSelected ? (item.selectedIcon ?? item.icon) : item.icon,
+                size: 20,
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  item.label,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                    color: isSelected
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              if (item.badgeText != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    item.badgeText!,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SidebarGroup extends StatefulWidget {
+  final UIDesktopSidebarItem item;
+  final int selectedIndex;
+  final int startIndex;
+  final ValueChanged<int> onItemSelected;
+
+  const _SidebarGroup({
+    required this.item,
+    required this.selectedIndex,
+    required this.startIndex,
+    required this.onItemSelected,
+  });
+
+  @override
+  State<_SidebarGroup> createState() => _SidebarGroupState();
+}
+
+class _SidebarGroupState extends State<_SidebarGroup> {
+  late bool _isExpanded;
+
+  @override
+  void initState() {
+    super.initState();
+    final subLength = widget.item.subItems?.length ?? 0;
+    final endIndex = widget.startIndex + subLength;
+    _isExpanded = widget.selectedIndex >= widget.startIndex && widget.selectedIndex < endIndex;
+  }
+
+  @override
+  void didUpdateWidget(covariant _SidebarGroup oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final subLength = widget.item.subItems?.length ?? 0;
+    final endIndex = widget.startIndex + subLength;
+    final hasActiveSub = widget.selectedIndex >= widget.startIndex && widget.selectedIndex < endIndex;
+    if (hasActiveSub) {
+      _isExpanded = true;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final subLength = widget.item.subItems?.length ?? 0;
+    final hasActiveSubItem = widget.selectedIndex >= widget.startIndex &&
+        widget.selectedIndex < widget.startIndex + subLength;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 11,
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    widget.item.icon,
+                    size: 20,
+                    color: hasActiveSubItem
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      widget.item.label,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: hasActiveSubItem ? FontWeight.bold : FontWeight.w500,
+                        color: hasActiveSubItem
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                    size: 18,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        if (_isExpanded && widget.item.subItems != null) ...[
+          const SizedBox(height: 2),
+          ...widget.item.subItems!.asMap().entries.map((entry) {
+            final subIndex = entry.key;
+            final subItem = entry.value;
+            final globalIndex = widget.startIndex + subIndex;
+            final isSelected = globalIndex == widget.selectedIndex;
+
+            return Padding(
+              padding: const EdgeInsets.only(left: 12.0, top: 2),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  onTap: () => widget.onItemSelected(globalIndex),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 150),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 9,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? theme.colorScheme.primary.withValues(alpha: 0.12)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          isSelected
+                              ? (subItem.selectedIcon ?? subItem.icon)
+                              : subItem.icon,
+                          size: 18,
+                          color: isSelected
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.onSurfaceVariant,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            subItem.label,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontSize: 13.5,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                              color: isSelected
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
+        ],
+      ],
     );
   }
 }
