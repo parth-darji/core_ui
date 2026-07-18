@@ -36,7 +36,7 @@ class UIDropdown<T> extends StatelessWidget {
         return Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24.0),
-            constraints: const BoxConstraints(maxHeight: 400),
+            constraints: const BoxConstraints(maxHeight: 400, maxWidth: 450.0),
             decoration: BoxDecoration(
               color: resolvedBg,
               borderRadius: BorderRadius.circular(20.0),

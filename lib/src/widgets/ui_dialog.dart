@@ -109,49 +109,54 @@ class UIDialog extends StatelessWidget {
     final resolvedBg =
         isDark ? const Color(0xFF1E1E1E) : UIColors.cardBackground;
 
-    return AlertDialog(
-      backgroundColor: resolvedBg,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24.0),
-      ),
-      icon: icon,
-      title: Text(
-        title,
-        style: UITypography.titleLarge.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
-      ),
-      content: content ?? (message != null ? Text(
-        message!,
-        style: UITypography.bodyMedium.copyWith(
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-        ),
-        textAlign: TextAlign.center,
-      ) : null),
-      actionsAlignment: MainAxisAlignment.spaceEvenly,
-      actionsPadding:
-          const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
-      actions: [
-        if (cancelLabel != null)
-          UITextButton(
-            text: cancelLabel!,
-            onPressed: () {
-              Navigator.pop(context);
-              onCancel?.call();
-            },
-            textColor: Colors.grey.shade600,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 500.0),
+        child: AlertDialog(
+          backgroundColor: resolvedBg,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24.0),
           ),
-        UIFilledButton(
-          text: confirmLabel,
-          height: 44.0,
-          borderRadius: 12.0,
-          onPressed: () {
-            Navigator.pop(context);
-            onConfirm();
-          },
+          icon: icon,
+          title: Text(
+            title,
+            style: UITypography.titleLarge.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          content: content ?? (message != null ? Text(
+            message!,
+            style: UITypography.bodyMedium.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+          ) : null),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
+          actionsPadding:
+              const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
+          actions: [
+            if (cancelLabel != null)
+              UITextButton(
+                text: cancelLabel!,
+                onPressed: () {
+                  Navigator.pop(context);
+                  onCancel?.call();
+                },
+                textColor: Colors.grey.shade600,
+              ),
+            UIFilledButton(
+              text: confirmLabel,
+              height: 44.0,
+              borderRadius: 12.0,
+              onPressed: () {
+                Navigator.pop(context);
+                onConfirm();
+              },
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

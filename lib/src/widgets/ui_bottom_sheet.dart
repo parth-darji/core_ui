@@ -222,7 +222,7 @@ class UIBottomSheet extends StatelessWidget {
                         const SizedBox(height: 12.0),
                         // Sticky Header title row
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 12.0),
                           child: Row(
                             children: [
                               Expanded(

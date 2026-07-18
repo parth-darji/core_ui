@@ -1,6 +1,6 @@
 name: core_ui
 description: Material 3 design tokens, clean layout components, and typography.
-version: 1.2.22
+version: 1.2.23
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
