@@ -57,11 +57,14 @@ class UIEmptyState extends StatelessWidget {
             ),
             if (actionLabel != null && onActionPressed != null) ...[
               const SizedBox(height: 24.0),
-              UIFilledButton(
-                text: actionLabel!,
-                height: 44.0,
-                borderRadius: 12.0,
-                onPressed: onActionPressed,
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 280),
+                child: UIFilledButton(
+                  text: actionLabel!,
+                  height: 44.0,
+                  borderRadius: 12.0,
+                  onPressed: onActionPressed,
+                ),
               ),
             ],
           ],
