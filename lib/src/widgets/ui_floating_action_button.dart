@@ -51,7 +51,9 @@ class UIFloatingActionButton extends StatelessWidget {
 
     return UIBounceable(
       onTap: onPressed,
-      child: fab,
+      child: IgnorePointer(
+        child: fab,
+      ),
     );
   }
 }
