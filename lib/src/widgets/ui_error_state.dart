@@ -65,7 +65,7 @@ class UIErrorState extends StatelessWidget {
               Text(
                 'Error Code: $errorCode',
                 style: UITypography.bodySmall.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,

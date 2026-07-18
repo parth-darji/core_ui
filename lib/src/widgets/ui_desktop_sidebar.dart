@@ -63,16 +63,27 @@ class UIDesktopSidebar extends StatelessWidget {
                 if (logo != null)
                   logo!
                 else
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.architecture_rounded,
-                      color: Colors.white,
-                      size: 22,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      'assets/app_icon.png',
+                      width: 36,
+                      height: 36,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.architecture_rounded,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 const SizedBox(width: 12),
@@ -86,7 +97,6 @@ class UIDesktopSidebar extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(height: 1),
           const SizedBox(height: 12),
           Expanded(
             child: ListView.separated(
@@ -165,13 +175,11 @@ class UIDesktopSidebar extends StatelessWidget {
               },
             ),
           ),
-          if (profileFooter != null) ...[
-            const Divider(height: 1),
+          if (profileFooter != null)
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: profileFooter!,
             ),
-          ],
         ],
       ),
     );
