@@ -259,56 +259,35 @@ class UIBottomSheet extends StatelessWidget {
                           ),
                         ),
                         if (showDivider) const UIDivider(height: 1.0),
-                        // Scrollable Content & Overlay Action Button inside a Flexible stack
+                        // Scrollable Content
                         Flexible(
-                          child: Stack(
-                            children: [
-                              SingleChildScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                padding: EdgeInsets.only(
-                                  left: 20.0,
-                                  right: 20.0,
-                                  top: 16.0,
-                                  bottom: actionButton != null ? 140.0 : 24.0,
-                                ),
-                                child: child,
-                              ),
-                              if (actionButton != null)
-                                Positioned(
-                                  left: 0,
-                                  right: 0,
-                                  bottom: 0,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        colors: [
-                                          resolvedBg,
-                                          resolvedBg,
-                                          resolvedBg.withValues(alpha: 0.9),
-                                          resolvedBg.withValues(alpha: 0.0),
-                                        ],
-                                        stops: const [0.0, 0.4, 0.7, 1.0],
-                                      ),
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                      left: 20.0,
-                                      right: 20.0,
-                                      top: 32.0,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom: UISafeBottomSpacing.getPadding(context, fallbackMargin: 20.0),
-                                      ),
-                                      child: actionButton!,
-                                    ),
-                                  ),
-                                ),
-                            ],
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 16.0,
+                            ),
+                            child: child,
                           ),
                         ),
-                        if (actionButton == null) const UISafeBottomSpacing(),
+                        // Sticky / Fixed bottom button container
+                        if (actionButton != null)
+                          Container(
+                            color: resolvedBg,
+                            padding: const EdgeInsets.only(
+                              left: 20.0,
+                              right: 20.0,
+                              top: 16.0,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                bottom: UISafeBottomSpacing.getPadding(context, fallbackMargin: 20.0),
+                              ),
+                              child: actionButton!,
+                            ),
+                          )
+                        else
+                          const UISafeBottomSpacing(),
                       ],
                     ),
                   ),
