@@ -40,7 +40,7 @@ class UIDropdown<T> extends StatelessWidget {
         return Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24.0),
-            constraints: const BoxConstraints(maxHeight: 400, maxWidth: 450.0),
+            constraints: const BoxConstraints(maxHeight: 380, maxWidth: 450.0),
             decoration: BoxDecoration(
               color: resolvedBg,
               borderRadius: BorderRadius.circular(20.0),
@@ -82,59 +82,63 @@ class UIDropdown<T> extends StatelessWidget {
                       )
                     else
                       Flexible(
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          itemCount: items.length,
-                          separatorBuilder: (context, index) => const Divider(
-                            height: 1.0,
-                            color: UIColors.separator,
-                          ),
-                          itemBuilder: (context, index) {
-                            final item = items[index];
-                            final isSelected = item.value == value;
+                        child: Scrollbar(
+                          thumbVisibility: true,
+                          trackVisibility: true,
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            itemCount: items.length,
+                            separatorBuilder: (context, index) => const Divider(
+                              height: 1.0,
+                              color: UIColors.separator,
+                            ),
+                            itemBuilder: (context, index) {
+                              final item = items[index];
+                              final isSelected = item.value == value;
 
-                            return UIBounceable(
-                              onTap: () {
-                                Navigator.pop(context);
-                                onChanged(item.value);
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0,
-                                  vertical: 14.0,
-                                ),
-                                color: isSelected
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withValues(alpha: 0.1)
-                                    : Colors.transparent,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: DefaultTextStyle(
-                                        style: UITypography.bodyMedium.copyWith(
+                              return UIBounceable(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  onChanged(item.value);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0,
+                                    vertical: 14.0,
+                                  ),
+                                  color: isSelected
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withValues(alpha: 0.1)
+                                      : Colors.transparent,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: DefaultTextStyle(
+                                          style: UITypography.bodyMedium.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                          child: item.child,
+                                        ),
+                                      ),
+                                      if (isSelected)
+                                        Icon(
+                                          Icons.check,
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .onSurface,
+                                              .primary,
+                                          size: 20.0,
                                         ),
-                                        child: item.child,
-                                      ),
-                                    ),
-                                    if (isSelected)
-                                      Icon(
-                                        Icons.check,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        size: 20.0,
-                                      ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                   ],
