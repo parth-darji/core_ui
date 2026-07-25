@@ -37,6 +37,10 @@ class UIDropdown<T> extends StatelessWidget {
         final resolvedBg =
             isDark ? const Color(0xFF1E1E1E) : UIColors.cardBackground;
 
+        final dividerColor = isDark
+            ? Colors.white.withValues(alpha: 0.08)
+            : Colors.black.withValues(alpha: 0.06);
+
         return Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -64,7 +68,7 @@ class UIDropdown<T> extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    const Divider(height: 1.0, color: UIColors.separator),
+                    Divider(height: 1.0, color: dividerColor),
                     if (items.isEmpty)
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -89,9 +93,9 @@ class UIDropdown<T> extends StatelessWidget {
                             shrinkWrap: true,
                             padding: const EdgeInsets.only(bottom: 8.0),
                             itemCount: items.length,
-                            separatorBuilder: (context, index) => const Divider(
+                            separatorBuilder: (context, index) => Divider(
                               height: 1.0,
-                              color: UIColors.separator,
+                              color: dividerColor,
                             ),
                             itemBuilder: (context, index) {
                               final item = items[index];
