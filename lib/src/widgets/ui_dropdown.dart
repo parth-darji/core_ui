@@ -12,6 +12,7 @@ class UIDropdown<T> extends StatelessWidget {
   final String labelText;
   final String? hintText;
   final String? errorText;
+  final String? emptyText;
 
   const UIDropdown({
     super.key,
@@ -21,6 +22,7 @@ class UIDropdown<T> extends StatelessWidget {
     required this.labelText,
     this.hintText,
     this.errorText,
+    this.emptyText,
   });
 
   void _showOptionsDialog(BuildContext context) {
@@ -63,61 +65,78 @@ class UIDropdown<T> extends StatelessWidget {
                       ),
                     ),
                     const Divider(height: 1.0, color: UIColors.separator),
-                    Flexible(
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: items.length,
-                        separatorBuilder: (context, index) => const Divider(
-                          height: 1.0,
-                          color: UIColors.separator,
+                    if (items.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 28.0,
+                          horizontal: 16.0,
                         ),
-                        itemBuilder: (context, index) {
-                          final item = items[index];
-                          final isSelected = item.value == value;
+                        child: Text(
+                          emptyText ?? 'No options available',
+                          style: UITypography.bodyMedium.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    else
+                      Flexible(
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          itemCount: items.length,
+                          separatorBuilder: (context, index) => const Divider(
+                            height: 1.0,
+                            color: UIColors.separator,
+                          ),
+                          itemBuilder: (context, index) {
+                            final item = items[index];
+                            final isSelected = item.value == value;
 
-                          return UIBounceable(
-                            onTap: () {
-                              Navigator.pop(context);
-                              onChanged(item.value);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0,
-                                vertical: 14.0,
-                              ),
-                              color: isSelected
-                                  ? Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withValues(alpha: 0.1)
-                                  : Colors.transparent,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: DefaultTextStyle(
-                                      style: UITypography.bodyMedium.copyWith(
+                            return UIBounceable(
+                              onTap: () {
+                                Navigator.pop(context);
+                                onChanged(item.value);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                  vertical: 14.0,
+                                ),
+                                color: isSelected
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withValues(alpha: 0.1)
+                                    : Colors.transparent,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: DefaultTextStyle(
+                                        style: UITypography.bodyMedium.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                        child: item.child,
+                                      ),
+                                    ),
+                                    if (isSelected)
+                                      Icon(
+                                        Icons.check,
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .onSurface,
+                                            .primary,
+                                        size: 20.0,
                                       ),
-                                      child: item.child,
-                                    ),
-                                  ),
-                                  if (isSelected)
-                                    Icon(
-                                      Icons.check,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      size: 20.0,
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
