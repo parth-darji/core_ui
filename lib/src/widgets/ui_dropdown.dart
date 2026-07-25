@@ -88,10 +88,16 @@ class UIDropdown<T> extends StatelessWidget {
                       )
                     else
                       Flexible(
-                        child: Scrollbar(
+                        child: RawScrollbar(
                           controller: scrollController,
                           thumbVisibility: true,
-                          trackVisibility: true,
+                          trackVisibility: false,
+                          padding: const EdgeInsets.only(right: 2.0),
+                          thickness: 5.0,
+                          radius: const Radius.circular(4.0),
+                          thumbColor: isDark
+                              ? Colors.white.withValues(alpha: 0.35)
+                              : Colors.black.withValues(alpha: 0.25),
                           child: ListView.separated(
                             controller: scrollController,
                             shrinkWrap: true,
