@@ -41,7 +41,10 @@ class UIDropdown<T> extends StatelessWidget {
             ? Colors.white.withValues(alpha: 0.08)
             : Colors.black.withValues(alpha: 0.06);
 
-        final scrollController = ScrollController();
+        final selectedIndex = items.indexWhere((item) => item.value == value);
+        final initialOffset = selectedIndex > 0 ? (selectedIndex * 49.0) : 0.0;
+
+        final scrollController = ScrollController(initialScrollOffset: initialOffset);
 
         return Center(
           child: Container(
