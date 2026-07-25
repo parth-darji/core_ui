@@ -41,6 +41,8 @@ class UIDropdown<T> extends StatelessWidget {
             ? Colors.white.withValues(alpha: 0.08)
             : Colors.black.withValues(alpha: 0.06);
 
+        final scrollController = ScrollController();
+
         return Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -87,11 +89,13 @@ class UIDropdown<T> extends StatelessWidget {
                     else
                       Flexible(
                         child: Scrollbar(
+                          controller: scrollController,
                           thumbVisibility: true,
                           trackVisibility: true,
                           child: ListView.separated(
+                            controller: scrollController,
                             shrinkWrap: true,
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding: EdgeInsets.zero,
                             itemCount: items.length,
                             separatorBuilder: (context, index) => Divider(
                               height: 1.0,
